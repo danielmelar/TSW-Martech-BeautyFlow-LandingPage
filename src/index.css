@@ -697,6 +697,178 @@ h3 {
   color: #a18a76;
 }
 
+.product-sales-section {
+  padding: 112px 0 118px;
+  border-top: 1px solid var(--line);
+  background: #f8f7f5;
+}
+
+.product-sales-grid {
+  display: grid;
+  align-items: center;
+  grid-template-columns: 0.9fr 1.1fr;
+  gap: 84px;
+}
+
+.product-sales-copy h2 {
+  max-width: 510px;
+  margin: 16px 0 14px;
+  font-family: 'Manrope', sans-serif;
+  font-size: clamp(31px, 3.6vw, 43px);
+  font-weight: 500;
+  letter-spacing: -0.06em;
+  line-height: 1.2;
+}
+
+.product-sales-copy > p {
+  max-width: 490px;
+  margin-bottom: 0;
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.9;
+}
+
+.sales-points {
+  margin-top: 26px;
+  border-top: 1px solid #dedbd6;
+}
+
+.sales-points > div {
+  display: grid;
+  grid-template-columns: 31px 1fr;
+  gap: 10px;
+  border-bottom: 1px solid #dedbd6;
+  padding: 12px 0;
+}
+
+.sales-points > div > span {
+  padding-top: 2px;
+  color: #9b826e;
+  font-size: 8px;
+  letter-spacing: 0.08em;
+}
+
+.sales-points p {
+  margin: 0;
+  color: #77716c;
+  font-size: 9px;
+  line-height: 1.7;
+}
+
+.sales-points strong {
+  color: #242220;
+  font-size: 10px;
+  font-weight: 500;
+}
+
+.product-sales-window {
+  border: 1px solid #e4e1dc;
+  background: #fff;
+}
+
+.product-window-header {
+  display: flex;
+  min-height: 63px;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--line);
+  padding: 0 17px;
+}
+
+.product-chat {
+  display: flex;
+  min-height: 275px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 17px;
+  background: #fbfaf9;
+}
+
+.product-chat .message {
+  max-width: 85%;
+  font-size: 9px;
+}
+
+.recommended-product {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  padding: 13px 16px;
+}
+
+.product-packaging {
+  display: grid;
+  width: 53px;
+  height: 59px;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-items: center;
+  border: 1px solid #e6dfd8;
+  color: #806e5e;
+  background: #f3eee9;
+}
+
+.recommended-product-copy {
+  display: flex;
+  min-width: 0;
+  flex: 1;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.recommended-product-copy > span {
+  color: #907a66;
+  font-size: 7px;
+  letter-spacing: 0.1em;
+}
+
+.recommended-product-copy strong {
+  font-family: 'Manrope', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: -0.025em;
+}
+
+.recommended-product-copy small {
+  color: #817b76;
+  font-size: 8px;
+  line-height: 1.5;
+}
+
+.product-card-arrow {
+  flex: 0 0 auto;
+  color: #8b7664;
+}
+
+.product-next-step {
+  padding: 11px 16px 2px;
+}
+
+.product-next-step > span {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #82705f;
+  font-size: 7px;
+  letter-spacing: 0.1em;
+}
+
+.product-next-step > p {
+  margin: 7px 0 0;
+  color: #514b46;
+  font-size: 9px;
+}
+
+.product-demo-note {
+  margin: 13px 16px 14px;
+  color: #9a9590;
+  font-size: 8px;
+  line-height: 1.65;
+}
+
 .estimator-section {
   padding: 100px 0;
   border-top: 1px solid var(--line);
@@ -760,6 +932,14 @@ h3 {
   font-size: 10px;
   font-weight: 500;
   white-space: nowrap;
+}
+
+.range-hint {
+  display: block;
+  margin-top: 5px;
+  color: #8a847f;
+  font-size: 8px;
+  line-height: 1.5;
 }
 
 .range-control input {
@@ -1206,6 +1386,11 @@ h3 {
     gap: 42px;
   }
 
+  .product-sales-grid {
+    grid-template-columns: 0.9fr 1.1fr;
+    gap: 45px;
+  }
+
   .estimator-grid {
     grid-template-columns: 0.8fr 1.2fr;
     gap: 45px;
@@ -1341,6 +1526,7 @@ h3 {
 
   .benefits-section,
   .demo-section,
+  .product-sales-section,
   .estimator-section,
   .process-section,
   .faq-section {
@@ -1385,6 +1571,11 @@ h3 {
   .demo-grid {
     grid-template-columns: 1fr;
     gap: 34px;
+  }
+
+  .product-sales-grid {
+    grid-template-columns: 1fr;
+    gap: 32px;
   }
 
   .estimator-grid {

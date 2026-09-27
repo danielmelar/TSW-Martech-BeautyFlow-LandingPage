@@ -139,7 +139,7 @@ function Hero() {
           <SectionLabel>ATENDIMENTO PARA NEGÓCIOS DE BELEZA</SectionLabel>
           <h1>Você cuida de quem está na sua frente.<br /><span>A BeautyFlow cuida do WhatsApp.</span></h1>
           <p className="hero-description">
-            Uma assistente virtual que responde clientes, ajuda a organizar sua agenda e apresenta seus produtos — enquanto você trabalha.
+            Uma assistente virtual que atende, agenda e também vende seus produtos e serviços pelo WhatsApp — enquanto você trabalha.
           </p>
           <div className="hero-actions">
             <a className="button button-dark" href="#pre-venda">
@@ -182,8 +182,8 @@ function Benefits() {
     },
     {
       number: '03',
-      title: 'Apresente o que combina',
-      description: 'Produtos e cuidados complementares aparecem no momento certo, como parte natural do atendimento.',
+      title: 'Transforme conversas em vendas',
+      description: 'A BeautyFlow entende o que a cliente procura, recomenda itens do seu catálogo e conduz a conversa até a compra.',
       icon: ShoppingBag,
     },
   ];
@@ -266,13 +266,64 @@ function ConversationDemo() {
   );
 }
 
+function ProductSalesSection() {
+  return (
+    <section className="product-sales-section" id="vendas">
+      <div className="page-container product-sales-grid">
+        <div className="product-sales-copy">
+          <SectionLabel>CONSULTORIA E VENDAS NO WHATSAPP</SectionLabel>
+          <h2>Ela não só tira dúvidas. Ajuda a cliente a escolher — e comprar.</h2>
+          <p>
+            Quando alguém pergunta qual creme combina com o próprio cabelo, a BeautyFlow conversa, entende o que essa cliente procura e recomenda um produto ou serviço do seu catálogo. Depois, conduz o próximo passo da venda.
+          </p>
+          <div className="sales-points">
+            <div><span>01</span><p><strong>Entende a necessidade</strong><br />Faz perguntas com base nas informações que você cadastrou.</p></div>
+            <div><span>02</span><p><strong>Indica o que você oferece</strong><br />Recomenda produtos, tratamentos ou serviços complementares.</p></div>
+            <div><span>03</span><p><strong>Leva a conversa à compra</strong><br />Apresenta o próximo passo para pedir o produto ou agendar o serviço.</p></div>
+          </div>
+        </div>
+
+        <div aria-label="Exemplo de recomendação automática de produto para cabelo no WhatsApp" className="product-sales-window">
+          <div className="product-window-header">
+            <div className="preview-contact">
+              <span className="contact-avatar avatar-small">B</span>
+              <span><strong>BeautyFlow · Studio Bela</strong><small>Conversa de exemplo</small></span>
+            </div>
+            <span className="demo-header-tag">CONSULTORIA</span>
+          </div>
+          <div className="product-chat">
+            <div className="message message-client">Meu cabelo é cacheado e anda ressecado. Qual creme você recomenda?<small>14:26</small></div>
+            <div className="message message-assistant">Posso te ajudar! Você procura mais hidratação, definição ou controle de frizz?<small>14:26</small></div>
+            <div className="message message-client">Queria mais hidratação e definição.<small>14:27</small></div>
+            <div className="message message-assistant">Pelo que você me contou, essa opção do nosso catálogo pode combinar com o que procura:<small>14:27</small></div>
+          </div>
+          <div className="recommended-product">
+            <div aria-hidden="true" className="product-packaging"><ShoppingBag size={22} strokeWidth={1.35} /></div>
+            <div className="recommended-product-copy">
+              <span>DO CATÁLOGO DO STUDIO</span>
+              <strong>Creme para cachos</strong>
+              <small>Uma recomendação feita a partir do que a cliente contou.</small>
+            </div>
+            <ArrowRight className="product-card-arrow" size={17} />
+          </div>
+          <div className="product-next-step">
+            <span><Check size={13} /> PRÓXIMO PASSO</span>
+            <p>“Quer que eu reserve o seu?”</p>
+          </div>
+          <p className="product-demo-note">Demonstração ilustrativa. Produtos, respostas e encaminhamento de compra são configurados para cada negócio.</p>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function RevenueEstimator() {
   const [weeklyMessages, setWeeklyMessages] = useState(20);
   const [serviceValue, setServiceValue] = useState(180);
-  const [productValue, setProductValue] = useState(45);
+  const [complementarySaleValue, setComplementarySaleValue] = useState(120);
   const monthlyBookings = Math.round(weeklyMessages * 0.15 * 4.2);
   const monthlyAddOns = Math.round(weeklyMessages * 0.7 * 0.25 * 4.2);
-  const monthlyEstimate = monthlyBookings * serviceValue + monthlyAddOns * productValue;
+  const monthlyEstimate = monthlyBookings * serviceValue + monthlyAddOns * complementarySaleValue;
   const formatCurrency = (value: number) =>
     value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL', maximumFractionDigits: 0 });
 
@@ -281,9 +332,9 @@ function RevenueEstimator() {
       <div className="page-container estimator-grid">
         <div className="estimator-intro">
           <SectionLabel>FAÇA UMA SIMULAÇÃO</SectionLabel>
-          <h2>Quanto vale ter mais conversas bem atendidas?</h2>
-          <p>Ajuste os valores para visualizar um cenário possível para o seu negócio.</p>
-          <p className="estimator-note">Estimativa ilustrativa, não uma promessa de faturamento. O resultado real depende da sua rotina, dos serviços e da procura.</p>
+          <h2>Veja o potencial de vender produtos pelo WhatsApp.</h2>
+          <p>A BeautyFlow recomenda produtos do seu catálogo — como um creme para o tipo de cabelo da cliente — e serviços complementares, conduzindo a conversa até a compra.</p>
+          <p className="estimator-note">Estimativa ilustrativa, não uma promessa de faturamento. O resultado real depende da sua rotina, do catálogo, dos serviços e da procura.</p>
         </div>
         <div className="estimator-controls">
           <label className="range-control">
@@ -295,13 +346,14 @@ function RevenueEstimator() {
             <input aria-label="Valor médio do serviço" max="800" min="50" onChange={(event) => setServiceValue(Number(event.target.value))} step="10" type="range" value={serviceValue} />
           </label>
           <label className="range-control">
-            <span><span>Valor médio do produto extra</span><strong>{formatCurrency(productValue)}</strong></span>
-            <input aria-label="Valor médio do produto extra" max="150" min="20" onChange={(event) => setProductValue(Number(event.target.value))} step="5" type="range" value={productValue} />
+            <span><span>Valor médio do produto ou serviço vendido</span><strong>{formatCurrency(complementarySaleValue)}</strong></span>
+            <small className="range-hint">Ex.: creme, máscara capilar ou tratamento no salão</small>
+            <input aria-label="Valor médio do produto ou serviço vendido pela BeautyFlow" max="800" min="20" onChange={(event) => setComplementarySaleValue(Number(event.target.value))} step="10" type="range" value={complementarySaleValue} />
           </label>
           <div aria-live="polite" className="estimator-result">
-            <span>CENÁRIO MENSAL ILUSTRATIVO</span>
+            <span>CENÁRIO MENSAL · ATENDIMENTOS + VENDAS DA BEAUTYFLOW</span>
             <strong>{formatCurrency(monthlyEstimate)}</strong>
-            <p>Com {monthlyBookings} possíveis agendamentos retomados e {monthlyAddOns} sugestões extras aceitas.</p>
+            <p>Com {monthlyBookings} possíveis agendamentos retomados e {monthlyAddOns} vendas de produtos ou serviços recomendados pela BeautyFlow.</p>
           </div>
         </div>
       </div>
@@ -312,7 +364,7 @@ function RevenueEstimator() {
 function HowItWorks() {
   const steps = [
     ['01', 'Você compartilha', 'Seus serviços, preços, horários e o jeito que gosta de falar com as clientes.'],
-    ['02', 'A BeautyFlow atende', 'A assistente usa essas informações para conduzir as conversas no WhatsApp.'],
+    ['02', 'A BeautyFlow atende e recomenda', 'Responde dúvidas, apresenta produtos ou serviços adequados e ajuda a cliente a avançar.'],
     ['03', 'Você acompanha', 'Entre quando quiser e assuma a conversa sempre que o atendimento pedir seu toque pessoal.'],
   ];
 
@@ -502,6 +554,7 @@ export function BeautyFlowLandingPage() {
           <nav aria-label="Navegação principal" className="header-nav">
             <a href="#como-funciona">Como funciona</a>
             <a href="#demonstracao">Demonstração</a>
+            <a href="#vendas">Vendas</a>
             <a href="#simulador">Simulador</a>
             <a href="#duvidas">Dúvidas</a>
           </nav>
@@ -513,6 +566,7 @@ export function BeautyFlowLandingPage() {
         <Hero />
         <Benefits />
         <ConversationDemo />
+        <ProductSalesSection />
         <RevenueEstimator />
         <HowItWorks />
         <EarlyAccess />
