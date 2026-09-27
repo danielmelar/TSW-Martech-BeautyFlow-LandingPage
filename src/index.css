@@ -238,6 +238,11 @@ h3 {
   background: #3d3834;
 }
 
+.button-dark:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
 .text-link {
   display: inline-flex;
   align-items: center;
@@ -1095,17 +1100,51 @@ h3 {
   letter-spacing: 0;
 }
 
-.access-detail {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-top: 10px;
-  color: #65615d;
-  font-size: 9px;
+.concierge-kicker {
+  margin: 18px 0 0;
+  border-top: 1px solid var(--line);
+  padding-top: 15px;
+  color: #8b7562;
+  font-size: 8px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
 }
 
-.access-detail svg {
-  color: #8b7664;
+.concierge-list {
+  margin-top: 4px;
+}
+
+.concierge-item {
+  display: grid;
+  grid-template-columns: 22px 1fr;
+  gap: 8px;
+  border-bottom: 1px solid var(--line);
+  padding: 10px 0;
+}
+
+.concierge-item > span {
+  padding-top: 1px;
+  color: #9b826e;
+  font-size: 8px;
+  letter-spacing: 0.08em;
+}
+
+.concierge-item > p {
+  display: grid;
+  gap: 3px;
+  margin: 0;
+}
+
+.concierge-item strong {
+  color: #33302d;
+  font-size: 9px;
+  font-weight: 500;
+}
+
+.concierge-item small {
+  color: #77716c;
+  font-size: 8px;
+  line-height: 1.55;
 }
 
 .access-button {

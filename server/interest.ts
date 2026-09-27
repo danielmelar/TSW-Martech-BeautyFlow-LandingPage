@@ -46,16 +46,6 @@ export function buildPixPayload(key: string, name: string, city: string, amount:
   return `${payload}${crc16(payload)}`;
 }
 
-function escapeHtml(value: string) {
-  return value.replace(/[&<>"']/g, (character) => ({
-    '&': '&amp;',
-    '<': '&lt;',
-    '>': '&gt;',
-    '"': '&quot;',
-    "'": '&#39;',
-  })[character] ?? character);
-}
-
 function requiredSetting(name: string) {
   const value = process.env[name]?.trim();
   if (!value) throw new Error(`Configuração ausente: ${name}`);
@@ -108,62 +98,12 @@ async function createInterest(body: unknown) {
     width: 280,
   });
 
-  const safeName = escapeHtml(name);
-  const safePhone = escapeHtml(phone);
-  const safeProfession = escapeHtml(profession);
-  let emailNotificationStatus: 'sent' | 'failed' = 'failed';
-  try {
-    const notificationEmail = requiredSetting('LEAD_NOTIFICATION_EMAIL');
-    const resendApiKey = requiredSetting('RESEND_API_KEY');
-    const resendFrom = requiredSetting('RESEND_FROM_EMAIL');
-    const emailResponse = await fetch('https://api.resend.com/emails', {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${resendApiKey}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        from: resendFrom,
-        to: [notificationEmail],
-        subject: `Novo contato BeautyFlow · Pix pendente · ${name.replace(/[\r\n]/g, ' ')}`,
-        text: [
-          'Novo contato na lista de espera da BeautyFlow.',
-          `Nome: ${name}`,
-          `WhatsApp: ${phone}`,
-          `Área: ${profession}`,
-          `Status: aguardando confirmação manual do Pix de R$ ${amount.replace('.', ',')}.`,
-          `Referência Pix (TXID): ${txid}`,
-        ].join('\n'),
-        html: `
-          <h2>Novo contato BeautyFlow</h2>
-          <p>Uma pessoa entrou na lista de espera e recebeu os dados do Pix.</p>
-          <p><strong>Nome:</strong> ${safeName}<br />
-          <strong>WhatsApp:</strong> ${safePhone}<br />
-          <strong>Área:</strong> ${safeProfession}</p>
-          <p><strong>Status:</strong> aguardando confirmação manual do Pix de R$ ${amount.replace('.', ',')}.</p>
-          <p><strong>Referência Pix (TXID):</strong> ${txid}</p>
-        `,
-      }),
-      signal: AbortSignal.timeout(10000),
-    });
-
-    if (!emailResponse.ok) {
-      console.error('Falha ao enviar notificação da lista de interesse:', emailResponse.status);
-    } else {
-      emailNotificationStatus = 'sent';
-    }
-  } catch (error) {
-    const message = error instanceof Error ? error.message : 'Erro inesperado de e-mail.';
-    console.error('Notificação por e-mail não enviada:', message);
-  }
-
   return {
     amount,
     merchantName,
     pixCopyPaste,
     qrCodeDataUrl,
     txid,
-    emailNotificationStatus,
     paymentStatus: 'awaiting_manual_confirmation' as const,
   };
 }

@@ -18,7 +18,12 @@ interface PixPaymentDetails {
   qrCodeDataUrl: string;
   paymentStatus: 'awaiting_manual_confirmation';
   txid: string;
-  emailNotificationStatus: 'sent' | 'failed';
+}
+
+interface InterestLead {
+  name: string;
+  phone: string;
+  profession: string;
 }
 
 const conversations = [
@@ -390,11 +395,20 @@ function HowItWorks() {
 }
 
 function EarlyAccess() {
+  const whatsappNumber = (import.meta.env.VITE_WHATSAPP_NUMBER || '5511933184146').replace(/\D/g, '');
   const [paymentDetails, setPaymentDetails] = useState<PixPaymentDetails | null>(null);
+  const [interestLead, setInterestLead] = useState<InterestLead | null>(null);
   const [showPaymentScreen, setShowPaymentScreen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formMessage, setFormMessage] = useState('');
   const [copyMessage, setCopyMessage] = useState('');
+
+  const paymentMessage = interestLead && paymentDetails
+    ? `Oi! Acabei de fazer o Pix da lista de espera BeautyFlow.\n\nNome: ${interestLead.name}\nMeu WhatsApp: ${interestLead.phone}\nÁrea: ${interestLead.profession}\nValor: R$ ${Number(paymentDetails.amount).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}\nReferência Pix (TXID): ${paymentDetails.txid}\n\nPodem conferir o pagamento e entrar em contato comigo, por favor?`
+    : '';
+  const whatsappLink = whatsappNumber && paymentMessage
+    ? `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(paymentMessage)}`
+    : undefined;
 
   const handleInterestSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -410,6 +424,8 @@ function EarlyAccess() {
       return;
     }
 
+    const lead = { name, phone, profession };
+    setInterestLead(lead);
     setIsSubmitting(true);
     setShowPaymentScreen(true);
     setFormMessage('Preparando seu QR Code Pix…');
@@ -463,26 +479,46 @@ function EarlyAccess() {
             <span>LISTA DE ESPERA</span>
             <span className="access-price">R$ 47,90 <small>pagamento único</small></span>
           </div>
-          <div className="access-detail"><Check size={14} /> Configuração inicial assistida</div>
-          <div className="access-detail"><Check size={14} /> Atendimento e agenda no WhatsApp</div>
+          <p className="concierge-kicker">UM COMEÇO ACOMPANHADO DE PERTO</p>
+          <div className="concierge-list">
+            <div className="concierge-item">
+              <span>01</span>
+              <p><strong>Usuária da primeira turma</strong><small>Faça parte das primeiras profissionais a experimentar a BeautyFlow.</small></p>
+            </div>
+            <div className="concierge-item">
+              <span>02</span>
+              <p><strong>Acompanhamento nos primeiros usos</strong><small>Receba apoio da equipe durante a configuração e o começo da sua rotina.</small></p>
+            </div>
+            <div className="concierge-item">
+              <span>03</span>
+              <p><strong>Canal direto com a equipe</strong><small>Compartilhe dúvidas e feedback enquanto começa a usar a BeautyFlow.</small></p>
+            </div>
+          </div>
           {paymentDetails ? (
             <div className="pix-payment" id="pix-payment">
-              <div className="pix-success-note"><Check size={15} /> Seu contato foi enviado. Agora você pode pagar o Pix.</div>
+              <div className="pix-success-note"><Check size={15} /> Pix pronto. Depois de pagar, avise a equipe pelo WhatsApp.</div>
               <p className="pix-instructions">Escaneie o QR Code no app do seu banco ou copie o código Pix.</p>
               <img alt="QR Code Pix da lista de espera BeautyFlow" className="pix-qr-image" src={paymentDetails.qrCodeDataUrl} />
               <p className="pix-amount">R$ {Number(paymentDetails.amount).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</p>
               <p className="pix-reference">Referência para conferência: <strong>{paymentDetails.txid}</strong></p>
-              <p aria-live="polite" className={paymentDetails.emailNotificationStatus === 'sent' ? 'form-message' : 'form-message form-message-error'}>
-                {paymentDetails.emailNotificationStatus === 'sent'
-                  ? 'Seu contato foi enviado por e-mail. O pagamento será conferido manualmente.'
-                  : 'QR Code gerado, mas o aviso por e-mail não foi enviado. Confira a configuração do Resend.'}
-              </p>
               <label className="pix-code-label" htmlFor="pix-copy-paste">Pix Copia e Cola</label>
               <textarea className="pix-copy-paste" id="pix-copy-paste" readOnly rows={3} value={paymentDetails.pixCopyPaste} />
               <button className="button button-dark access-button pix-copy-button" onClick={handleCopyPix} type="button">
                 <Copy size={14} /> Copiar código Pix
               </button>
               <p aria-live="polite" className="form-message">{copyMessage || 'O pagamento será conferido manualmente.'}</p>
+              {whatsappLink ? (
+                <a className="button button-dark access-button payment-report-button" href={whatsappLink} rel="noreferrer" target="_blank">
+                  Fiz o pagamento · avisar pelo WhatsApp <ArrowRight size={16} />
+                </a>
+              ) : (
+                <>
+                  <button className="button button-dark access-button payment-report-button" disabled type="button">
+                    Fiz o pagamento · avisar pelo WhatsApp <ArrowRight size={16} />
+                  </button>
+                  <p className="form-message form-message-error">O WhatsApp da equipe ainda não foi configurado.</p>
+                </>
+              )}
             </div>
           ) : showPaymentScreen ? (
             <div aria-live="polite" className="pix-payment pix-loading" id="pix-payment">
@@ -518,7 +554,7 @@ function EarlyAccess() {
               <button className="button button-dark access-button" disabled={isSubmitting} type="submit">
                 {isSubmitting ? 'Enviando…' : 'Enviar interesse e ver Pix'} <ArrowRight size={16} />
               </button>
-              <p aria-live="polite" className="form-message">{formMessage || 'Seus dados serão enviados por e-mail para a equipe BeautyFlow.'}</p>
+              <p aria-live="polite" className="form-message">{formMessage || 'Depois do Pix, o botão abre o WhatsApp com seus dados e a referência do pagamento.'}</p>
             </form>
           )}
         </div>
