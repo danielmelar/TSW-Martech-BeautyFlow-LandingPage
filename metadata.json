@@ -1,0 +1,6 @@
+{
+  "name": "Aura • Assistente WhatsApp para Autônomos",
+  "description": "A primeira assistente inteligente para profissionais independentes. Responde orçamentos em segundos, organiza sua agenda e vende produtos extras no piloto automático.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

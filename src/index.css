@@ -1,0 +1,44 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --color-areia: #F3E7DA;
+    --color-terracota: #C96A4A;
+    --color-coral: #D9745E;
+    --color-caramelo: #B77A52;
+    --color-cafe: #5A3A29;
+    --color-dourado: #C99A4D;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Poppins', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  }
+}
+
+.font-heading {
+  font-family: 'Poppins', sans-serif;
+}
+
+.font-body {
+  font-family: 'Montserrat', sans-serif;
+}
+
+/* Custom subtle scrollbar with Areia/Caramelo tone */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #F3E7DA;
+}
+::-webkit-scrollbar-thumb {
+  background: #B77A52;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #5A3A29;
+}
