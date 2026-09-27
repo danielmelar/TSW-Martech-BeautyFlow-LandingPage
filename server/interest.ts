@@ -127,7 +127,7 @@ async function createInterest(body: unknown) {
         to: [notificationEmail],
         subject: `Novo contato BeautyFlow · Pix pendente · ${name.replace(/[\r\n]/g, ' ')}`,
         text: [
-          'Novo contato interessado na pré-venda BeautyFlow.',
+          'Novo contato na lista de espera da BeautyFlow.',
           `Nome: ${name}`,
           `WhatsApp: ${phone}`,
           `Área: ${profession}`,
@@ -136,7 +136,7 @@ async function createInterest(body: unknown) {
         ].join('\n'),
         html: `
           <h2>Novo contato BeautyFlow</h2>
-          <p>Uma pessoa demonstrou interesse na pré-venda e recebeu os dados do Pix.</p>
+          <p>Uma pessoa entrou na lista de espera e recebeu os dados do Pix.</p>
           <p><strong>Nome:</strong> ${safeName}<br />
           <strong>WhatsApp:</strong> ${safePhone}<br />
           <strong>Área:</strong> ${safeProfession}</p>
@@ -187,11 +187,11 @@ export const interestHandler: NextHandleFunction = (request, response) => {
         sendJson(response, 400, { error: 'Preencha nome, WhatsApp válido e área de atuação.' });
       } else if (message.startsWith('Configuração ausente:') || message.startsWith('PIX_')) {
         console.error(message);
-        sendJson(response, 503, { error: 'A pré-venda ainda está sendo configurada. Tente novamente mais tarde.' });
+        sendJson(response, 503, { error: 'A lista de espera ainda está sendo configurada. Tente novamente mais tarde.' });
       } else if (error instanceof SyntaxError) {
         sendJson(response, 400, { error: 'Dados inválidos.' });
       } else {
-        console.error('Erro ao processar contato de pré-venda:', message);
+        console.error('Erro ao processar contato da lista de espera:', message);
         sendJson(response, 500, { error: 'Não foi possível processar seu interesse. Tente novamente mais tarde.' });
       }
     }

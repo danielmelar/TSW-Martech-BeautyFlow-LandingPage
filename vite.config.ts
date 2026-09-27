@@ -14,6 +14,9 @@ export default defineConfig(() => {
         configureServer(server) {
           server.middlewares.use('/api/interest', interestHandler);
         },
+        configurePreviewServer(server) {
+          server.middlewares.use('/api/interest', interestHandler);
+        },
       },
     ],
     resolve: {

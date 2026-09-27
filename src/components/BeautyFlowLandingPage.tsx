@@ -73,7 +73,7 @@ const faqs = [
   {
     question: 'Quando poderei começar a usar?',
     answer:
-      'A BeautyFlow está em fase de pré-lançamento. Os detalhes sobre disponibilidade, configuração e planos serão compartilhados com quem tiver interesse no acesso antecipado.',
+      'A BeautyFlow está em fase de pré-lançamento. Os detalhes sobre disponibilidade, configuração e planos serão compartilhados com quem entrar na lista de espera.',
   },
 ];
 
@@ -143,7 +143,7 @@ function Hero() {
           </p>
           <div className="hero-actions">
             <a className="button button-dark" href="#pre-venda">
-              Conhecer o acesso antecipado <ArrowRight size={16} />
+              Entrar na lista de espera <ArrowRight size={16} />
             </a>
             <a className="text-link" href="#demonstracao">Ver uma conversa <ArrowDownRight size={15} /></a>
           </div>
@@ -422,6 +422,10 @@ function EarlyAccess() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name, phone, profession }),
       });
+      const contentType = response.headers.get('content-type') ?? '';
+      if (!contentType.toLowerCase().includes('json')) {
+        throw new Error('A API Pix não está publicada neste ambiente. Configure a produção para iniciar o servidor Node com `npm start`.');
+      }
       const result = await response.json();
       if (!response.ok) {
         throw new Error(result.error || 'Não foi possível enviar seu interesse.');
@@ -450,13 +454,13 @@ function EarlyAccess() {
     <section className="early-access-section" id="pre-venda">
       <div className="page-container early-access-inner">
         <div className="early-access-copy">
-          <SectionLabel>BEAUTYFLOW · PRÉ-LANÇAMENTO</SectionLabel>
+          <SectionLabel>BEAUTYFLOW · LISTA DE ESPERA</SectionLabel>
           <h2>Seu próximo atendimento pode começar com mais tranquilidade.</h2>
-          <p>Deixe seus dados para demonstrar interesse no acesso antecipado. Nossa equipe continua a conversa pelo WhatsApp.</p>
+          <p>Deixe seus dados para entrar na lista de espera. Nossa equipe entrará em contato pelo WhatsApp com os próximos passos.</p>
         </div>
         <div className="access-card">
           <div className="access-card-top">
-            <span>ACESSO ANTECIPADO</span>
+            <span>LISTA DE ESPERA</span>
             <span className="access-price">R$ 47,90 <small>pagamento único</small></span>
           </div>
           <div className="access-detail"><Check size={14} /> Configuração inicial assistida</div>
@@ -465,7 +469,7 @@ function EarlyAccess() {
             <div className="pix-payment" id="pix-payment">
               <div className="pix-success-note"><Check size={15} /> Seu contato foi enviado. Agora você pode pagar o Pix.</div>
               <p className="pix-instructions">Escaneie o QR Code no app do seu banco ou copie o código Pix.</p>
-              <img alt="QR Code Pix do acesso antecipado BeautyFlow" className="pix-qr-image" src={paymentDetails.qrCodeDataUrl} />
+              <img alt="QR Code Pix da lista de espera BeautyFlow" className="pix-qr-image" src={paymentDetails.qrCodeDataUrl} />
               <p className="pix-amount">R$ {Number(paymentDetails.amount).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</p>
               <p className="pix-reference">Referência para conferência: <strong>{paymentDetails.txid}</strong></p>
               <p aria-live="polite" className={paymentDetails.emailNotificationStatus === 'sent' ? 'form-message' : 'form-message form-message-error'}>
@@ -558,7 +562,7 @@ export function BeautyFlowLandingPage() {
             <a href="#simulador">Simulador</a>
             <a href="#duvidas">Dúvidas</a>
           </nav>
-          <a className="header-cta" href="#pre-venda">Acesso antecipado <ArrowRight size={14} /></a>
+          <a className="header-cta" href="#pre-venda">Lista de espera <ArrowRight size={14} /></a>
         </div>
       </header>
 
