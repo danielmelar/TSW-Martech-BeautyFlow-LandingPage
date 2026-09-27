@@ -4,12 +4,16 @@ import {
   ArrowRight,
   CalendarCheck2,
   Check,
+  ChevronLeft,
+  ChevronRight,
   ChevronDown,
-  Clock3,
   Copy,
   MessageCircle,
   ShoppingBag,
 } from 'lucide-react';
+import firstChatScreenshot from '../../WhatsApp Image 2026-09-27 at 12.31.17.jpeg';
+import finalChatScreenshot from '../../WhatsApp Image 2026-09-27 at 12.31.18 (1).jpeg';
+import middleChatScreenshot from '../../WhatsApp Image 2026-09-27 at 12.31.18.jpeg';
 
 interface PixPaymentDetails {
   amount: string;
@@ -28,34 +32,22 @@ interface InterestLead {
 
 const conversations = [
   {
-    label: 'Cabelo',
-    name: 'Studio Marina',
-    service: 'Coloração',
-    client: 'Ana',
-    question: 'Oi! Queria saber quanto fica a coloração. Tem horário essa semana?',
-    answer: 'Oi, Ana! A coloração começa em R$ 280. Posso ver os horários disponíveis pra você.',
-    time: 'Quinta, 14h',
-    product: 'E que tal incluir nosso tratamento de brilho no final? ✨',
+    label: '1 · Atendimento',
+    image: firstChatScreenshot,
+    alt: 'Print original da conversa de atendimento no WhatsApp, etapa inicial.',
+    caption: 'Consulta de serviço e valores',
   },
   {
-    label: 'Estética',
-    name: 'Ateliê Camila',
-    service: 'Limpeza de pele',
-    client: 'Bia',
-    question: 'Oi! Você faz limpeza de pele? Queria agendar para sábado.',
-    answer: 'Oi, Bia! Faço sim. A limpeza dura cerca de 1 hora. Vou conferir o sábado pra você.',
-    time: 'Sábado, 10h',
-    product: 'Posso deixar separado também o gel de limpeza que usamos no cuidado em casa.',
+    label: '2 · Horários',
+    image: middleChatScreenshot,
+    alt: 'Print original da conversa no WhatsApp, etapa de consulta e escolha de horário.',
+    caption: 'Consulta de disponibilidade e escolha',
   },
   {
-    label: 'Tatuagem',
-    name: 'Linha Fina Studio',
-    service: 'Fine line',
-    client: 'Luiza',
-    question: 'Oi! Queria fazer uma tattoo pequena. Como funciona o orçamento?',
-    answer: 'Oi, Luiza! Me conta a ideia e o tamanho aproximado que te explico os próximos passos.',
-    time: 'Sexta, 16h',
-    product: 'Também temos um balm de cuidado para os primeiros dias. Quer conhecer?',
+    label: '3 · Confirmação',
+    image: finalChatScreenshot,
+    alt: 'Print original da conversa no WhatsApp, etapa de confirmação do agendamento.',
+    caption: 'Resumo do serviço e horário reservado',
   },
 ];
 
@@ -95,43 +87,36 @@ function SectionLabel({ children }: { children: ReactNode }) {
   return <p className="section-label">{children}</p>;
 }
 
-function HeroPreview() {
+function HeroScreenshotCarousel() {
+  const [activeIndex, setActiveIndex] = useState(0);
+  const currentPrint = conversations[activeIndex];
+  const nextPrint = conversations[(activeIndex + 1) % conversations.length];
+
   return (
-    <div aria-label="Exemplo de conversa da BeautyFlow no WhatsApp" className="hero-preview">
-      <div className="preview-topbar">
-        <div className="preview-contact">
-          <span className="contact-avatar">M</span>
-          <span>
-            <strong>Studio Marina</strong>
-            <small>Atendimento BeautyFlow</small>
-          </span>
-        </div>
-        <span className="preview-status"><i /> disponível</span>
+    <div aria-label="Carrossel com prints do atendimento pelo WhatsApp" className="hero-screenshot-carousel">
+      <div className="hero-screenshot-fan">
+        <a aria-hidden="true" className="hero-fan-print hero-fan-print-back" href={nextPrint.image} rel="noreferrer" tabIndex={-1} target="_blank">
+          <img alt="" src={nextPrint.image} />
+        </a>
+        <a aria-label={`Abrir print: ${currentPrint.caption}`} className="hero-fan-print hero-fan-print-front" href={currentPrint.image} rel="noreferrer" target="_blank">
+          <img alt={currentPrint.alt} src={currentPrint.image} />
+        </a>
       </div>
-      <div className="preview-date">HOJE</div>
-      <div className="preview-chat">
-        <div className="message message-client">
-          Oi! Queria saber quanto fica a coloração. Tem horário essa semana?
-          <small>10:42</small>
+      <div className="hero-screenshot-controls">
+        <div aria-live="polite" className="hero-screenshot-caption">
+          <span>PRINTS DO WHATSAPP</span>
+          <strong>{currentPrint.caption}</strong>
         </div>
-        <div className="message message-assistant">
-          Oi, Ana! A coloração começa em R$ 280. Posso consultar os horários pra você.
-          <small>10:42 <Check className="message-check" /></small>
-        </div>
-        <div className="appointment-note">
-          <CalendarCheck2 size={14} strokeWidth={1.7} />
-          <span>Opção encontrada · Quinta, 14h</span>
-        </div>
-        <div className="message message-assistant message-product">
-          E que tal incluir nosso tratamento de brilho no final? ✨
-          <small>10:43 <Check className="message-check" /></small>
+        <div className="hero-carousel-buttons">
+          <button aria-label="Ver print anterior" onClick={() => setActiveIndex((activeIndex - 1 + conversations.length) % conversations.length)} type="button">
+            <ChevronLeft size={16} />
+          </button>
+          <span>{String(activeIndex + 1).padStart(2, '0')} / {String(conversations.length).padStart(2, '0')}</span>
+          <button aria-label="Ver próximo print" onClick={() => setActiveIndex((activeIndex + 1) % conversations.length)} type="button">
+            <ChevronRight size={16} />
+          </button>
         </div>
       </div>
-      <div className="preview-bottom">
-        <span><MessageCircle size={14} /> Uma conversa, do primeiro oi ao próximo horário.</span>
-        <ArrowDownRight size={16} strokeWidth={1.5} />
-      </div>
-      <span aria-hidden="true" className="preview-index">01 / 03</span>
     </div>
   );
 }
@@ -150,7 +135,7 @@ function Hero() {
             <a className="button button-dark" href="#pre-venda">
               Entrar na lista de espera <ArrowRight size={16} />
             </a>
-            <a className="text-link" href="#demonstracao">Ver uma conversa <ArrowDownRight size={15} /></a>
+            <a className="text-link" href="#demonstracao">Ver os prints <ArrowDownRight size={15} /></a>
           </div>
           <div className="hero-footnote">
             <span className="footnote-rule" />
@@ -159,8 +144,7 @@ function Hero() {
         </div>
         <div className="hero-visual">
           <div aria-hidden="true" className="visual-backdrop" />
-          <HeroPreview />
-          <div className="visual-caption"><span>01</span> UMA CONVERSA MAIS BEM CUIDADA</div>
+          <HeroScreenshotCarousel />
         </div>
       </div>
       <div className="page-container audience-strip" id="para-quem">
@@ -226,10 +210,10 @@ function ConversationDemo() {
     <section className="demo-section" id="demonstracao">
       <div className="page-container demo-grid">
         <div className="demo-intro">
-          <SectionLabel>NA PRÁTICA</SectionLabel>
-          <h2>Uma boa conversa pode terminar em horário marcado.</h2>
-          <p>A cliente pergunta. A BeautyFlow responde com as informações do seu negócio, ajuda a encontrar um horário e ainda sugere o próximo cuidado.</p>
-          <div className="scenario-tabs" aria-label="Escolha um exemplo de atendimento">
+          <SectionLabel>CONVERSA NO WHATSAPP</SectionLabel>
+          <h2>Do primeiro contato à confirmação do horário.</h2>
+          <p>Veja os prints da conversa e navegue pelas etapas do atendimento no WhatsApp.</p>
+          <div className="scenario-tabs" aria-label="Escolha uma etapa da conversa">
             {conversations.map((item, index) => (
               <button
                 aria-pressed={activeIndex === index}
@@ -242,28 +226,25 @@ function ConversationDemo() {
               </button>
             ))}
           </div>
-          <p className="demo-disclaimer">Exemplo ilustrativo de conversa.</p>
+          <p className="demo-disclaimer">Capturas de tela da experiência compartilhada pela equipe.</p>
         </div>
 
         <div className="demo-window">
           <div className="demo-window-header">
             <div className="preview-contact">
-              <span className="contact-avatar avatar-small">{conversation.name.slice(0, 1)}</span>
-              <span><strong>{conversation.name}</strong><small>Conversa de exemplo</small></span>
+              <span className="contact-avatar avatar-small">W</span>
+              <span><strong>Atendimento pelo WhatsApp</strong><small>{conversation.caption}</small></span>
             </div>
-            <span className="demo-header-tag">WHATSAPP</span>
+            <span className="demo-header-tag">PRINT {activeIndex + 1} / 3</span>
           </div>
-          <div className="demo-messages" aria-live="polite">
-            <p className="demo-day">HOJE</p>
-            <div className="message message-client">{conversation.question}<small>10:42</small></div>
-            <div className="message message-assistant">{conversation.answer}<small>10:42 <Check className="message-check" /></small></div>
-            <div className="appointment-note"><CalendarCheck2 size={14} strokeWidth={1.7} /><span>Horário sugerido · {conversation.time}</span></div>
-            <div className="message message-client">Perfeito, pode marcar!<small>10:43</small></div>
-            <div className="message message-assistant message-product">{conversation.product}<small>10:43 <Check className="message-check" /></small></div>
+          <div aria-live="polite" className="demo-screenshot-stage">
+            <a aria-label="Abrir o print em tamanho original" className="demo-screenshot-link" href={conversation.image} rel="noreferrer" target="_blank">
+              <img alt={conversation.alt} className="demo-screenshot" src={conversation.image} />
+            </a>
           </div>
           <div className="demo-window-footer">
-            <span><Clock3 size={14} /> No ritmo da sua rotina</span>
-            <span>{conversation.service}</span>
+            <span><CalendarCheck2 size={14} /> Etapa {activeIndex + 1} de {conversations.length}</span>
+            <span>{conversation.caption}</span>
           </div>
         </div>
       </div>
