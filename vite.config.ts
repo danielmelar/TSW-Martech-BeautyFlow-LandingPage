@@ -1,24 +1,20 @@
+import 'dotenv/config';
 import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react';
 import path from 'path';
 import {defineConfig} from 'vite';
-import {interestHandler} from './server/interest.ts';
 
 export default defineConfig(() => {
   return {
-    plugins: [
-      react(),
-      tailwindcss(),
-      {
-        name: 'beautyflow-interest-api',
-        configureServer(server) {
-          server.middlewares.use('/api/interest', interestHandler);
-        },
-        configurePreviewServer(server) {
-          server.middlewares.use('/api/interest', interestHandler);
-        },
-      },
-    ],
+    plugins: [react(), tailwindcss()],
+    define: {
+      __BEAUTYFLOW_PIX_CONFIG__: JSON.stringify({
+        key: process.env.PIX_KEY ?? '',
+        merchantName: process.env.PIX_MERCHANT_NAME ?? '',
+        city: process.env.PIX_MERCHANT_CITY ?? '',
+        amount: process.env.PIX_AMOUNT ?? '47.90',
+      }),
+    },
     resolve: {
       alias: {
         '@': path.resolve(__dirname, '.'),

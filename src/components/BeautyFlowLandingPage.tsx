@@ -14,6 +14,7 @@ import {
 import firstChatScreenshot from '../../WhatsApp Image 2026-09-27 at 12.31.17.jpeg';
 import finalChatScreenshot from '../../WhatsApp Image 2026-09-27 at 12.31.18 (1).jpeg';
 import middleChatScreenshot from '../../WhatsApp Image 2026-09-27 at 12.31.18.jpeg';
+import { createPixPayment } from '../pix';
 
 interface PixPaymentDetails {
   amount: string;
@@ -414,21 +415,8 @@ function EarlyAccess() {
       document.getElementById('pix-payment')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }, 50);
     try {
-      const response = await fetch('/api/interest', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, phone, profession }),
-      });
-      const contentType = response.headers.get('content-type') ?? '';
-      if (!contentType.toLowerCase().includes('json')) {
-        throw new Error('A API Pix não está publicada neste ambiente. Configure a produção para iniciar o servidor Node com `npm start`.');
-      }
-      const result = await response.json();
-      if (!response.ok) {
-        throw new Error(result.error || 'Não foi possível enviar seu interesse.');
-      }
-
-      setPaymentDetails(result as PixPaymentDetails);
+      const result = await createPixPayment(__BEAUTYFLOW_PIX_CONFIG__);
+      setPaymentDetails({ ...result, paymentStatus: 'awaiting_manual_confirmation' });
       setFormMessage('');
     } catch (error) {
       setFormMessage(error instanceof Error ? error.message : 'Não foi possível enviar seu interesse. Tente novamente.');
